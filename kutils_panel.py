@@ -10,10 +10,10 @@ class Kutils(bpy.types.Panel):
     bl_category = "Kutils"
 
     def draw(self, context):
-        layout = self.layout
+        layout = self.layout    
         
         row = layout.row()
-        obj = context.object
+        
 
         
         
@@ -30,7 +30,7 @@ class Kutils(bpy.types.Panel):
         # Change operator based on context is EDIT mode    t
         if context.active_object.mode == 'EDIT':
             col = layout.column(align=True)
-            col.label(text="Hello EDIT!", icon='MOD_SOLIDIFY')
+            col.label(text="Edit mode", icon='MOD_SOLIDIFY')
             
             # Create new row var to section off operators
             row = layout.row()        
@@ -39,15 +39,9 @@ class Kutils(bpy.types.Panel):
             
             row2 = layout.row()   
             row2.operator('mesh.merge', text='ToD First').type = 'FIRST'
-            row2.operator('mesh.merge', text='ToD Last').type = 'LAST'       
-            
+            row2.operator('mesh.merge', text='ToD Last').type = 'LAST'                  
                
             layout.operator('mesh.remove_doubles', text='Merge by Distance').threshold = 0.5    
-#            layout.operator('mesh.remove_doubles', text='To First').type = 'FIRST'     
-           
-      
-
-
 
 
 
