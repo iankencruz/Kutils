@@ -11,33 +11,47 @@ class Kutils(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        obj = context.object
         
         row = layout.row()
+        obj = context.object
+
         
-        # Change operator based on context is EDIT mode    
-        if context.active_object.mode == 'EDIT':
-            row.label(text="Hello EDIT!", icon='WORLD_DATA')
-                     
-            layout.operator('mesh.merge', text='To First').type = 'FIRST'
-            layout.operator('mesh.merge', text='To Last').type = 'LAST'           
-                     
-            layout.operator('mesh.remove_doubles', text='Merge by Distance').threshold = 0.5    
-#            layout.operator('mesh.remove_doubles', text='To First').type = 'FIRST'     
-           
+        
+        
         # Change operator based on context is OBJECT mode    
         if context.active_object.mode == 'OBJECT':
-            row.label(text="Hello OBJECT!", icon='WORLD_DATA')
+            row.label(text="Object mode", icon='SNAP_VOLUME')
             
             row = layout.column()        
             layout.operator('object.origin_set', text='ORIGIN TO 3D Cursor').type = "ORIGIN_CURSOR"
+        
+        
+        
+        # Change operator based on context is EDIT mode    t
+        if context.active_object.mode == 'EDIT':
+            col = layout.column(align=True)
+            col.label(text="Hello EDIT!", icon='MOD_SOLIDIFY')
+            
+            # Create new row var to section off operators
+            row = layout.row()        
+            row.operator('mesh.merge', text='To First').type = 'FIRST'
+            row.operator('mesh.merge', text='To Last').type = 'LAST'           
+            
+            row2 = layout.row()   
+            row2.operator('mesh.merge', text='ToD First').type = 'FIRST'
+            row2.operator('mesh.merge', text='ToD Last').type = 'LAST'       
+            
+               
+            layout.operator('mesh.remove_doubles', text='Merge by Distance').threshold = 0.5    
+#            layout.operator('mesh.remove_doubles', text='To First').type = 'FIRST'     
+           
+      
 
-        row.label(text="Hello world!", icon='WORLD_DATA')
 
-        row = layout.row()
-        row.label(text="Active object is: " + obj.name)
-        row = layout.row()
-        row.prop(obj, "name")
+
+
+
+        
         
         
 
