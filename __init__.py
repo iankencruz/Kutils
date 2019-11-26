@@ -19,7 +19,7 @@ bl_info = {
     "version" : (0, 0, 1),
     "location" : "",
     "warning" : "",
-    "category" : "Generic"
+    "category" : "Interface"
 }
 
 
@@ -38,12 +38,6 @@ class KFile_Manager(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "Kutils"
-
-
-
-    @classmethod
-    def poll(cls, context):
-        return (context.object is not None)
 
 
     def draw(self, context):
