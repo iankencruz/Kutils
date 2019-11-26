@@ -104,15 +104,11 @@ class Kutils(bpy.types.Panel):
 
 
         row = layout.row()  
-        row.label(text="Global Controls", icon='WORLD_DATA')
+        row.label(text="Global", icon='WORLD_DATA')
         
         # Gizmos Section
-        scene = context.scene
         view = context.space_data       
-
-        row = layout.row()
-        row.label(text="Object Gizmo")
-        
+                
         row = layout.row(align=True)        
         row.prop(view, "show_gizmo_object_translate", text="Move", icon='OUTLINER_DATA_EMPTY')
         row.prop(view, "show_gizmo_object_rotate", text="Rotate",icon='ORIENTATION_GIMBAL')
@@ -150,8 +146,6 @@ class Kutils(bpy.types.Panel):
 
         ###################################
         #           MODIFIERS                #
-        
-        obj = context.active_object
         row = layout.row()           
         row.label(text="Modifiers", icon='MODIFIER')     
 
@@ -160,6 +154,7 @@ class Kutils(bpy.types.Panel):
         col.operator('object.array_operator',text='Array', icon='MOD_ARRAY')
         col.operator('object.mirror_operator', text='Mirror', icon='MOD_MIRROR')
         col.operator('object.solidify_operator', text='Solidify', icon='MOD_SOLIDIFY')
+
         col = split.column(align=True)
         col.operator('object.boolean_operator', text='Boolean', icon='MOD_BOOLEAN')
         col.operator('object.lattice_operator', text='Lattice', icon='MOD_LATTICE')
@@ -176,8 +171,7 @@ class Kutils(bpy.types.Panel):
         split = layout.split(align=True)
         col = split.column(align=True)      
         col.operator('object.shade_smooth', icon='SHADING_TEXTURE')  
-        col.operator('object.origin_set', text='Cursor', icon='GIZMO').type = "ORIGIN_CURSOR"
-          
+        col.operator('object.origin_set', text='Cursor', icon='GIZMO').type = "ORIGIN_CURSOR"          
     
         # Origin
         col = split.column(align=True)
@@ -197,16 +191,13 @@ class Kutils(bpy.types.Panel):
             row = layout.row()
             row.label(text="Edit mode", icon='MOD_SOLIDIFY')
 
-            
             row = layout.row(align=False) 
             row.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'
-
             
             # Create new row var to section off operators 
             row = layout.row(align=True)                  
             row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.1              
             row.operator('mesh.merge', text='Cursor', icon='PIVOT_CURSOR').type='CURSOR'
-
 
             split = layout.split(align=True)
             col = split.column(align=True)
@@ -222,28 +213,7 @@ class Kutils(bpy.types.Panel):
             
 
 
+classes = (KFile_Manager, Kutils, Mirror, Array, Solidify, Boolean, Lattice, Subsurf)
 
 
-def register():    
-    bpy.utils.register_class(KFile_Manager)
-    bpy.utils.register_class(Kutils)
-
-    #modifiers
-    bpy.utils.register_class(Mirror)
-    bpy.utils.register_class(Array)
-    bpy.utils.register_class(Solidify)
-    bpy.utils.register_class(Boolean)
-    bpy.utils.register_class(Lattice)
-    bpy.utils.register_class(Subsurf)
-
-def unregister():
-    bpy.utils.unregister_class(KFile_Manager)
-    bpy.utils.unregister_class(Kutils)
-
-    #modifiers
-    bpy.utils.unregister_class(Mirror)
-    bpy.utils.unregister_class(Array)
-    bpy.utils.unregister_class(Solidify)
-    bpy.utils.unregister_class(Boolean)
-    bpy.utils.unregister_class(Lattice)
-    bpy.utils.unregister_class(Subsurf)
+register, unregister = bpy.utils.register_classes_factory(classes)
