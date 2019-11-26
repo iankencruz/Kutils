@@ -130,6 +130,7 @@ class Kutils(bpy.types.Panel):
         col.active = display_all
         
         col.prop(overlay, "show_face_orientation",icon='ORIENTATION_NORMAL')
+        col.operator('mesh.flip_normals', text="Flip Normals", icon='ARROW_LEFTRIGHT')
 
         layout.separator()
 
