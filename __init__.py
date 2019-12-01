@@ -189,18 +189,19 @@ class Kutils(bpy.types.Panel):
 
 
             # Create new row var to section off operators
-            row = layout.row(align=False) 
-            row.operator_enum('mesh.merge', 'type')    
-            row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01 
+            col = layout.column(align=True) 
+            col.operator_enum('mesh.merge', 'type')    
+            col.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01 
             
-            row.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
+            col.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
 
             split = layout.split(align=True)
             col = split.column(align=True)
             col.operator('mesh.mark_seam', text='Mark Seam', icon='STICKY_UVS_VERT').clear=False
-            col.operator('mesh.mark_sharp', text='Mark Sharp', icon='CUBE')   
+            col.operator('mesh.mark_seam', text='Clear Seam', icon='STICKY_UVS_DISABLE').clear=True    
+              
             col = split.column(align=True) 
-            col.operator('mesh.mark_seam', text='Clear Seam', icon='STICKY_UVS_DISABLE').clear=True        
+            col.operator('mesh.mark_sharp', text='Mark Sharp', icon='CUBE')     
             col.operator('mesh.mark_sharp', text='Clear Sharp',icon='MESH_CUBE').clear=True
 
             row = layout.row()
