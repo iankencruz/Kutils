@@ -184,16 +184,30 @@ class Kutils(bpy.types.Panel):
         
         if context.active_object.mode == 'EDIT':
 
-            row = layout.row()
+            row = layout.row(align=True)
             row.label(text="Edit mode", icon='MOD_SOLIDIFY')
 
+            # Align First and Last together
+            col = layout.column(align=True)
+            row = col.row(align=True)         
+            for k in ['FIRST', 'LAST']:                
+                try:
+                    row.operator("mesh.merge", text=k.title(), icon="GROUP_VERTEX").type = k
+                except TypeError:
+                    row.enabled = False
+            #Align Big button "Distance" with first and last
+            row = col.row(align=True)
+            split = row.split(align=True)
+            row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01
+
+            
 
             # Create new row var to section off operators
-            col = layout.column(align=True) 
-            col.operator_enum('mesh.merge', 'type')    
-            col.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01 
+            # col = layout.column(align=True) 
+            # col.operator_enum('mesh.merge', 'type')    
+            # col.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01 
             
-            col.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
+            # col.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
 
             split = layout.split(align=True)
             col = split.column(align=True)
