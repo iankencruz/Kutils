@@ -16,7 +16,7 @@ bl_info = {
     "author" : "ikruz",
     "description" : "",
     "blender" : (2, 80, 0),
-    "version" : (0, 0, 1),
+    "version" : (0, 0, 3),
     "location" : "",
     "warning" : "",
     "category" : "Interface"
@@ -159,19 +159,20 @@ class Kutils(bpy.types.Panel):
         ###################################
         #           OBJECT                #
         
-        row = layout.row()           
-        row.label(text="Object mode", icon='SNAP_VOLUME')     
+        if context.active_object.mode == 'OBJECT':
+            row = layout.row()           
+            row.label(text="Object mode", icon='SNAP_VOLUME')     
 
-        # Shading
-        split = layout.split(align=True)
-        col = split.column(align=True)      
-        col.operator('object.shade_smooth', icon='SHADING_TEXTURE')  
-        col.operator('object.origin_set', text='Cursor', icon='GIZMO').type = "ORIGIN_CURSOR"          
-    
-        # Origin
-        col = split.column(align=True)
-        col.operator('object.shade_flat', icon='SHADING_SOLID')  
-        col.operator('object.origin_set', text='Geometry', icon='GIZMO').type = "ORIGIN_GEOMETRY"
+            # Shading
+            split = layout.split(align=True)
+            col = split.column(align=True)      
+            col.operator('object.shade_smooth', icon='SHADING_TEXTURE')  
+            col.operator('object.origin_set', text='Cursor', icon='GIZMO').type = "ORIGIN_CURSOR"          
+        
+            # Origin
+            col = split.column(align=True)
+            col.operator('object.shade_flat', icon='SHADING_SOLID')  
+            col.operator('object.origin_set', text='Geometry', icon='GIZMO').type = "ORIGIN_GEOMETRY"
 
 
 
@@ -186,13 +187,13 @@ class Kutils(bpy.types.Panel):
             row = layout.row()
             row.label(text="Edit mode", icon='MOD_SOLIDIFY')
 
+
+            # Create new row var to section off operators
             row = layout.row(align=False) 
-            row.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'
+            row.operator_enum('mesh.merge', 'type')    
+            row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01 
             
-            # Create new row var to section off operators 
-            row = layout.row(align=True)                  
-            row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.1              
-            row.operator('mesh.merge', text='Cursor', icon='PIVOT_CURSOR').type='CURSOR'
+            row.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
 
             split = layout.split(align=True)
             col = split.column(align=True)
