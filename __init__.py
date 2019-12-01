@@ -166,12 +166,12 @@ class Kutils(bpy.types.Panel):
             # Shading
             split = layout.split(align=True)
             col = split.column(align=True)      
-            col.operator('object.shade_smooth', icon='SHADING_TEXTURE')  
+            col.operator('object.shade_smooth', text="Smooth", icon='SHADING_TEXTURE')  
             col.operator('object.origin_set', text='Cursor', icon='GIZMO').type = "ORIGIN_CURSOR"          
         
             # Origin
             col = split.column(align=True)
-            col.operator('object.shade_flat', icon='SHADING_SOLID')  
+            col.operator('object.shade_flat', text="Flat", icon='SHADING_SOLID')  
             col.operator('object.origin_set', text='Geometry', icon='GIZMO').type = "ORIGIN_GEOMETRY"
 
 
