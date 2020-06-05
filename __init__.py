@@ -29,46 +29,6 @@ from . kutils_modifiers_op import *
 
 
 
-
-
-class KFile_Manager(bpy.types.Panel):
-    """Creates a Utility Panel for all common used tools"""
-    bl_label = "File Manager"
-    bl_idname = "KFM_PT_manager"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "Kutils"
-
-
-    def draw(self, context):
-        layout = self.layout
-        row = layout.row()
-
-        
-
-        
-        row.label(text="Files", icon='FILEBROWSER')
-
-        split = layout.split(align=True)
-        col = split.column(align=True)
-        col.operator('wm.read_homefile', text='New', icon='FILE_NEW')
-        col.operator('wm.link', icon='LINK_BLEND')
-        col.operator('import_scene.fbx', icon='IMPORT')
-
-        col = split.column(align=True)
-        col.operator('wm.open_mainfile', text='Open')        
-        col.operator('wm.append', icon='APPEND_BLEND')        
-        col.operator('export_scene.fbx', icon='EXPORT')
-
-
-        col = layout.column(align=True)
-        col.operator('wm.search_menu', text="Search", icon='VIEWZOOM')
-        
-        
-
-
-
-
 class Kutils(bpy.types.Panel):
     """Creates a Utility Panel for all common used tools"""
     bl_label = "Kutilies"
@@ -90,6 +50,28 @@ class Kutils(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout    
+
+        ###################################
+        #           File Manager           #
+
+        row = layout.row()
+        
+        row.label(text="Files", icon='FILEBROWSER')
+
+        split = layout.split(align=True)
+        col = split.column(align=True)
+        col.operator('wm.read_homefile', text='New', icon='FILE_NEW')
+        col.operator('wm.link', icon='LINK_BLEND')
+        col.operator('import_scene.fbx', icon='IMPORT')
+
+        col = split.column(align=True)
+        col.operator('wm.open_mainfile', text='Open')        
+        col.operator('wm.append', icon='APPEND_BLEND')        
+        col.operator('export_scene.fbx', icon='EXPORT')
+
+
+        col = layout.column(align=True)
+        col.operator('wm.search_menu', text="Search", icon='VIEWZOOM')
 
 
         ###################################
@@ -129,8 +111,25 @@ class Kutils(bpy.types.Panel):
         col = layout.column(align=True)
         col.active = display_all
         
-        col.prop(overlay, "show_face_orientation",icon='ORIENTATION_NORMAL')
-        col.operator('mesh.flip_normals', text="Flip Normals", icon='ARROW_LEFTRIGHT')
+        row = layout.row(align=True)
+        row.prop(overlay, "show_face_orientation",icon='ORIENTATION_NORMAL')
+        row.operator('mesh.flip_normals', text="Flip Normals", icon='ARROW_LEFTRIGHT')
+
+        # ClearCust
+        row = layout.column()
+        row.operator('mesh.customdata_custom_splitnormals_clear', text='Clear Custom Split Normals', icon = 'X')
+
+        # Auto Smoothing Test
+        obj = context.object
+        mesh = obj.data
+
+        split = layout.split()
+
+        col = split.row()
+        col.prop(mesh, "use_auto_smooth")
+        sub = col.row()
+        sub.active = mesh.use_auto_smooth and not mesh.has_custom_normals
+        sub.prop(mesh, "auto_smooth_angle", text="Angle")
 
         layout.separator()
 
@@ -224,7 +223,7 @@ class Kutils(bpy.types.Panel):
             
 
 
-classes = (KFile_Manager, Kutils, Mirror, Array, Solidify, Boolean, Lattice, Subsurf)
+classes = (Kutils, Mirror, Array, Solidify, Boolean, Lattice, Subsurf)
 
 
 register, unregister = bpy.utils.register_classes_factory(classes)
