@@ -15,8 +15,8 @@ class Mirror(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.modifier_add(type='MIRROR')
+        bpy.context.workspace.screens[0].areas[0].spaces.active.context = 'MODIFIER'
         return {'FINISHED'}
-
 
 class Array(bpy.types.Operator):
     """Creates an Array modifier on active object"""
@@ -30,6 +30,7 @@ class Array(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.modifier_add(type='ARRAY')
+        bpy.context.workspace.screens[0].areas[0].spaces.active.context = 'MODIFIER'
         return {'FINISHED'}
 
 class Solidify(bpy.types.Operator):
@@ -44,6 +45,7 @@ class Solidify(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.modifier_add(type='SOLIDIFY')
+        bpy.context.workspace.screens[0].areas[0].spaces.active.context = 'MODIFIER'
         return {'FINISHED'}
 
 class Boolean(bpy.types.Operator):
@@ -58,6 +60,7 @@ class Boolean(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.modifier_add(type='BOOLEAN')
+        bpy.context.workspace.screens[0].areas[0].spaces.active.context = 'MODIFIER'
         return {'FINISHED'}
 
 class Lattice(bpy.types.Operator):
@@ -72,6 +75,7 @@ class Lattice(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.modifier_add(type='LATTICE')
+        bpy.context.workspace.screens[0].areas[0].spaces.active.context = 'MODIFIER'
         return {'FINISHED'}
 
 class Subsurf(bpy.types.Operator):
@@ -86,4 +90,5 @@ class Subsurf(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.modifier_add(type='SUBSURF')
+        bpy.context.workspace.screens[0].areas[0].spaces.active.context = 'MODIFIER'
         return {'FINISHED'}

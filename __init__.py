@@ -39,10 +39,10 @@ class Kutils(bpy.types.Panel):
 
 
 
-
-    @classmethod
-    def poll(cls, context):
-        return (context.object is not None)
+    """ NOT SURE WHAT THIS DOES TBH  """
+    # @classmethod
+    # def poll(cls, context):
+    #     return (context.object is not None)
 
 
 
@@ -69,9 +69,6 @@ class Kutils(bpy.types.Panel):
         col.operator('wm.append', icon='APPEND_BLEND')        
         col.operator('export_scene.fbx', icon='EXPORT')
 
-
-        col = layout.column(align=True)
-        col.operator('wm.search_menu', text="Search", icon='VIEWZOOM')
 
 
         ###################################
@@ -118,6 +115,16 @@ class Kutils(bpy.types.Panel):
         # ClearCust
         row = layout.column()
         row.operator('mesh.customdata_custom_splitnormals_clear', text='Clear Custom Split Normals', icon = 'X')
+
+
+        col = layout.column(align=True)
+        col.operator('object.make_single_user', text="Make Single User", icon="SNAP_VOLUME").obdata=True
+        row = col.split(align=True)
+        objType = getattr(context.object, 'type', '')
+        if objType  in ['CURVE']:
+            row.operator('object.convert', text="Convert To Mesh", icon="MESH_CYLINDER").target='MESH'
+        elif objType  in ['MESH']:
+            row.operator('object.convert', text="Convert To Curve", icon="OUTLINER_DATA_CURVE").target='CURVE'
 
         # Auto Smoothing Test
         obj = context.object
@@ -173,10 +180,11 @@ class Kutils(bpy.types.Panel):
             col.operator('object.shade_flat', text="Flat", icon='SHADING_SOLID')  
             col.operator('object.origin_set', text='Geometry', icon='GIZMO').type = "ORIGIN_GEOMETRY"
 
+            
+            
 
 
-    
-        
+
         
         ###################################
         #           Edit                #
@@ -189,7 +197,7 @@ class Kutils(bpy.types.Panel):
             # Align First and Last together
             col = layout.column(align=True)
             row = col.row(align=True)         
-            for k in ['FIRST', 'LAST']:                
+            for k in ['FIRST','CENTER','LAST']:                
                 try:
                     row.operator("mesh.merge", text=k.title(), icon="GROUP_VERTEX").type = k
                 except TypeError:
@@ -197,16 +205,12 @@ class Kutils(bpy.types.Panel):
             #Align Big button "Distance" with first and last
             row = col.row(align=True)
             split = row.split(align=True)
-            row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01
+            row.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01            
+            col.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
 
-            
-
-            # Create new row var to section off operators
-            # col = layout.column(align=True) 
-            # col.operator_enum('mesh.merge', 'type')    
-            # col.operator('mesh.remove_doubles', text='Distance', icon='DRIVER_DISTANCE').threshold = 0.01 
-            
-            # col.operator('mesh.separate', text="Separate Selected", icon='FACESEL').type='SELECTED'            
+            row = layout.row(align=True)
+            row.operator('mesh.bridge_edge_loops', text='Bridge', icon='NOCURVE')
+            row.operator('mesh.fill_grid', text='Grid Fill', icon='MESH_GRID')
 
             split = layout.split(align=True)
             col = split.column(align=True)
@@ -217,8 +221,15 @@ class Kutils(bpy.types.Panel):
             col.operator('mesh.mark_sharp', text='Mark Sharp', icon='CUBE')     
             col.operator('mesh.mark_sharp', text='Clear Sharp',icon='MESH_CUBE').clear=True
 
-            row = layout.row()
-            row.operator("uv.unwrap", icon='UV_VERTEXSEL')
+            row = layout.row(align=True)
+            row.operator("uv.unwrap", icon='UV')
+            row.operator("uv.smart_project", icon='MOD_UVPROJECT')
+            uv_projection = row.operator("uv.project_from_view", icon='UV_DATA')
+            # Projection properties
+            uv_projection.scale_to_bounds=False
+            uv_projection.correct_aspect=True
+            uv_projection.camera_bounds=False
+
 
             
 
