@@ -39,10 +39,10 @@ class Kutils(bpy.types.Panel):
 
 
 
-    """ NOT SURE WHAT THIS DOES TBH  """
-    # @classmethod
-    # def poll(cls, context):
-    #     return (context.object is not None)
+    """ Polls for Active Object """
+    @classmethod
+    def poll(cls, context):
+        return (context.object is not None)
 
 
 
@@ -139,6 +139,8 @@ class Kutils(bpy.types.Panel):
         sub.prop(mesh, "auto_smooth_angle", text="Angle")
 
         layout.separator()
+
+
 
 
 
